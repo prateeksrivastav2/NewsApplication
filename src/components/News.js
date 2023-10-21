@@ -28,13 +28,13 @@ export class News extends Component {
     }
     async updatenews() {
         this.props.setProgress(10);
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=4c683a4604a54638b4993e0e84d69751&page=1&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=4c683a4604a54638b4993e0e84d69751&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true });
         let data = await fetch(url);
         this.props.setProgress(50);
         let paseddata = await data.json();
         this.props.setProgress(70);
-        this.setState({ articles: paseddata.articles, totalResults: paseddata.totalResults })
+        this.setState({  articles: this.state.articles.concat(paseddata.articles), totalResults: paseddata.totalResults,page:this.state.page+1 })
         this.setState({ loading: false });
         this.props.setProgress(100);
     }
@@ -73,11 +73,11 @@ export class News extends Component {
     //     )
     // }
     fetchMoreData = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=4c683a4604a54638b4993e0e84d69751&page=1&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=4c683a4604a54638b4993e0e84d69751&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
         // this.setState({ loading: true });
         let data = await fetch(url);
         let paseddata = await data.json();
-        this.setState({ articles: this.state.articles.concat(paseddata.articles), totalResults: paseddata.totalResults })
+        this.setState({ articles: this.state.articles.concat(paseddata.articles), totalResults: paseddata.totalResults,page:this.state.page+1})
         // console.log(paseddata);
         this.setState({ loading: false });
     };
